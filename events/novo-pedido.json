@@ -1,0 +1,26 @@
+{
+  "body": {
+    "cliente_id": "cli_12345",
+    "produtos": [
+      {
+        "id": "prod_001",
+        "nome": "Smartphone",
+        "quantidade": 1,
+        "preco": 1500.00
+      },
+      {
+        "id": "prod_002", 
+        "nome": "Capa Protetora",
+        "quantidade": 2,
+        "preco": 25.00
+      }
+    ],
+    "endereco": {
+      "cep": "01234-567",
+      "rua": "Av. Paulista",
+      "numero": "1000",
+      "cidade": "São Paulo",
+      "estado": "SP"
+    }
+  }
+}

@@ -1,24 +1,37 @@
-import boto3
+import json
 from .models import Pedido
-from utils.constants import TABELA_DYNAMODB
 
-dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table(TABELA_DYNAMODB['PEDIDOS'])
+# Simula um banco de dados em memória
+pedidos_db = {}
+galpoes_db = {
+    "galpao_sp": {"cidade": "São Paulo", "capacidade": 1000},
+    "galpao_rj": {"cidade": "Rio de Janeiro", "capacidade": 800},
+    "galpao_mg": {"cidade": "Belo Horizonte", "capacidade": 600}
+}
 
-def atualizar_status_pedido(pedido_id: str, status: str, galpao_atribuido: str = None):
-    update_expression = "SET #status = :status"
-    expression_values = {':status': status}
-    expression_names = {'#status': 'status'}
-    
-    if galpao_atribuido:
-        update_expression += ", galpao_atribuido = :galpao"
-        expression_values[':galpao'] = galpao_atribuido
-    
-    response = table.update_item(
-        Key={'pedido_id': pedido_id},
-        UpdateExpression=update_expression,
-        ExpressionAttributeValues=expression_values,
-        ExpressionAttributeNames=expression_names,
-        ReturnValues='UPDATED_NEW'
-    )
-    return response
+def salvar_pedido(pedido: Pedido):
+    pedidos_db[pedido.id] = pedido.__dict__
+    return pedido.id
+
+def buscar_pedido(pedido_id: str):
+    return pedidos_db.get(pedido_id)
+
+def atualizar_status(pedido_id: str, novo_status: str, galpao: str = None):
+    if pedido_id in pedidos_db:
+        pedidos_db[pedido_id]['status'] = novo_status
+        if galpao:
+            pedidos_db[pedido_id]['galpao'] = galpao
+        return True
+    return False
+
+def listar_galpoes():
+    return galpoes_db
+
+def calcular_galpao_proximo(estado: str):
+    # Lógica simples de proximidade baseada no estado
+    mapeamento = {
+        "SP": "galpao_sp",
+        "RJ": "galpao_rj", 
+        "MG": "galpao_mg"
+    }
+    return mapeamento.get(estado, "galpao_sp")

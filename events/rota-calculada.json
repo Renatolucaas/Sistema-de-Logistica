@@ -1,0 +1,7 @@
+{
+  "pedido_id": "abc123",
+  "cliente_id": "cli_12345", 
+  "estado": "SP",
+  "valor_total": 1550.00,
+  "status": "recebido"
+}

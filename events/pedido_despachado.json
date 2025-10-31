@@ -1,0 +1,6 @@
+{
+  "pedido_id": "abc123",
+  "galpao": "galpao_sp",
+  "status": "rota_calculada",
+  "cliente_id": "cli_12345"
+}
